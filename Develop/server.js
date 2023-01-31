@@ -13,5 +13,17 @@ app.use(express.json());                        // parse incoming json
 app.use(express.static('public'));              // root dir for static files 
 //<insert whatever i use for unique identifier here>
 
+//HTML routes
+app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, './public/notes.html'))); // '/notes' returns 'notes.html'
+//Api routes
+app.get(('/api/notes', (req, res) => {
 
+})
+
+
+
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, './public/index.html')));      // fallback route to 'index.html'
+
+
+    
 
