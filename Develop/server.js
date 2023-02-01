@@ -1,8 +1,11 @@
 // server.js file
-
+ 
+//import needed modules
+             
+const { v4: uuidv4 } = require('uuid');         // used for random unique id generation
 const express = require('express');
 const path = require('path');
-const fs = require('fs');
+const fs = require('fs');                       //read/write functionality
 const database1 = require('./db/db.json');
 
 const app = express();                          // instantiates/builds middleware for express assigned to app
@@ -18,9 +21,18 @@ app.get('/notes', (req, res) => res.sendFile(path.join(__dirname, './public/note
 //API routes
 app.get('/api/notes', (req, res) => {
     const rawNotes = fs.readFileSync(path.join(__dirname, './db/db.json'), 'utf-8'); //reads db.json and sets contents to rawNotes 
-    const parsedNotes = JSON.parse(rawNotes); res.json(parsedNotes); // parses rawNotes and sends response with that parsed data
+    const parsedNotes = JSON.parse(rawNotes); res.json(parsedNotes); // parses rawNotes and sends json response 
 });
 
+
+app.post('/api/notes', (req, res) => {
+    const rawNotes = fs.readFileSync(path.join(__dirname, './db/db.json'), 'utf-8');
+    const parsedNotes = JSON.parse(rawNotes);
+    req.body.id = uuidv4();                                         // inserts unique id into created 'id' property first
+    parsedNotes.push(req.body);                                     // then add note data
+    fs.writeFileSync(path.join(__dirname, './db/db.json'), JSON.stringify(parsedNotes), 'utf-8'); // writes note data to database                            
+    res.json(`Note saved successfully!!! - Id: ${req.body.id}`);
+});
 
 
 
@@ -29,4 +41,5 @@ app.get('*', (req, res) => res.sendFile(path.join(__dirname, './public/index.htm
 
 
     
-
+// bind and listen for connections, also creates console link to localhost port for testing
+app.listen(PORT, () =>  console.log(`Express Server listening @ http://localhost:${PORT}`));
