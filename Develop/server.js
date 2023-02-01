@@ -32,6 +32,7 @@ app.post('/api/notes', (req, res) => {
     parsedNotes.push(req.body);                                     // then add note data
     fs.writeFileSync(path.join(__dirname, './db/db.json'), JSON.stringify(parsedNotes), 'utf-8'); // writes note data to database                            
     res.json(`Note saved successfully!!! - Id: ${req.body.id}`);
+    console.log(`Note saved successfully!!! - Id: ${req.body.id}`); // console log id and successful save
 });
 
 
