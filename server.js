@@ -40,7 +40,7 @@ app.delete('/api/notes/:id', (req, res) => {
         if (noteToDelete === datbase1[i].id) {  
             datbase1.splice(i, 1);              // remove 1 element from datbase1[] at current position in loop according to if statment
             let strippedNote = JSON.stringify(datbase1, null, 2);  
-            fs.writeFile('./db/db.json', strippedNote, function(error) {  //write back to db without deleted note
+            fs.writeFile('./db/db.json', strippedNote, function (error) {  //write back to db without deleted note
                 if (error) throw error;
             console.log(`Note Id '${noteToDelete}' has been deleted!!!`);
             res.json(datbase1);
